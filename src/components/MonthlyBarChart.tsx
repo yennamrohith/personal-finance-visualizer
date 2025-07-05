@@ -87,12 +87,28 @@ export default function MonthlyBarChart({ transactions }: MonthlyBarChartProps) 
   }, [transactions]); // Recalculate only when transactions change
 
   // --- Custom Tooltip Component for Recharts ---
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  // Define the type for the data structure within Recharts payload
+  interface PayloadItem {
+    value: number;
+    name: string;
+    color: string;
+    // Recharts payload can have other properties, but these are the ones used
+    // payload: { income: number; expense: number; month: string; }; // This might be present but not directly used in the tooltip rendering logic here
+  }
+
+  // Define the props for Recharts Custom Tooltip
+  interface CustomTooltipProps {
+    active?: boolean; // Recharts provides this
+    payload?: PayloadItem[]; // Recharts provides this, an array of data items
+    label?: string; // Recharts provides this (the dataKey value for the active point)
+  }
+
+  const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="p-2 rounded-md bg-neutral-800 text-white shadow-lg text-sm space-y-1">
           <p className="font-semibold text-base">{label}</p>
-          {payload.map((entry: any, index: number) => (
+          {payload.map((entry, index: number) => ( // Changed 'entry: any' to 'entry' as it's now typed by PayloadItem
             <p key={`item-${index}`} style={{ color: entry.color }}>
               {entry.name}: ₹{entry.value.toLocaleString()}
             </p>

@@ -26,9 +26,6 @@ interface BudgetComparisonChartProps {
   budgets: Record<string, Record<string, number>>; // budgets: { [monthYear: string]: { [category: string]: number } }
 }
 
-// --- Constants (if any, though not explicitly in this code) ---
-// You could define constants for colors here if they were used more broadly.
-
 // --- BudgetComparisonChart Component ---
 export default function BudgetComparisonChart({ transactions, budgets }: BudgetComparisonChartProps) {
   // --- Data Preparation Memoization ---
@@ -109,7 +106,28 @@ export default function BudgetComparisonChart({ transactions, budgets }: BudgetC
   }, [transactions, budgets]); // Re-run memoization if transactions or budgets change
 
   // --- Custom Tooltip Component for Recharts ---
-  const CustomTooltip = ({ active, payload, label }: any) => {
+
+  // Define the type for the data structure within Recharts payload
+  interface PayloadItem {
+    value: number;
+    name: string;
+    payload: {
+      key: string;
+      month: string;
+      category: string;
+      Budgeted: number;
+      Actual: number;
+    };
+  }
+
+  // Define the props for Recharts Custom Tooltip
+  interface CustomTooltipProps {
+    active?: boolean; // Recharts provides this
+    payload?: PayloadItem[]; // Recharts provides this, an array of data items
+    // label?: string; // We've removed this from the destructuring as it's not used
+  }
+
+  const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
       const item = payload[0].payload; // Access the data item
       return (
