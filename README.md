@@ -91,7 +91,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/yennamrohith/personal-finance-visualizer](https://github.com/yennamrohith/personal-finance-visualizer)
+    git clone https://github.com/yennamrohith/personal-finance-visualizer
     cd personal-finance-visualizer
     ```
 2.  **Install dependencies:**
